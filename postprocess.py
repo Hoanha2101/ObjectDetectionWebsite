@@ -1,4 +1,7 @@
 import numpy as np
+import cv2
+from tensorflow.keras.preprocessing import image as I_convert
+
 
 def convert_xywh_to_xyxy(bbox_array: np.array) -> np.array:
     converted_boxes = np.zeros_like(bbox_array)
@@ -58,7 +61,9 @@ def nms(bboxes: np.array, scores: np.array, iou_threshold: float) -> np.array:
 def postprocess(prediction: np.array, conf_thres: float=0.15, iou_thres: float=0.45, max_det: int=300) -> np.array:
     # 12348x10
     # x,y,w,h, object_score, class1, class2, class3, class4, class5
+    
     bs = prediction.shape[0]  # batch size
+ 
     xc = prediction[..., 4] > conf_thres  # candidates
     max_nms = 300  # maximum number of boxes into NMS
     max_wh = 7680
@@ -94,3 +99,10 @@ def postprocess(prediction: np.array, conf_thres: float=0.15, iou_thres: float=0
         output[xi] = x[i]
         
     return output
+
+def preprocess_image_TRT(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img_tensor = I_convert.img_to_array(img)
+    img_tensor = np.expand_dims(img_tensor, axis=0)
+    img_tensor /= 255
+    return img_tensor

@@ -19,9 +19,12 @@
 ## **User Interface**
 <img src="illustration/UI.png">
 
+    + There are 2 inference methods: ONNX or TensorRT
+
 ## **How to run app, api**
 <ul>Run_api
 	<li>uvicorn api:api --port 8000</li>
+    <li>Run python api.py in CMD</li>
 </ul>
 
 <ul>Run_app

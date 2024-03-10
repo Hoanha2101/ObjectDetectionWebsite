@@ -1,6 +1,7 @@
 import onnxruntime as ort
 import numpy as np
 
+
 def load_session(path: str) -> ort.InferenceSession:
     providers = [ 'CPUExecutionProvider','AzureExecutionProvider']
     session = ort.InferenceSession(path, providers=providers)   
@@ -11,7 +12,7 @@ def infer(inference_session: ort.InferenceSession, input_data: np.array) -> np.a
     output_name = inference_session.get_outputs()[0].name
     inference_inputs = {input_name: input_data}
     outputs = inference_session.run(
-        [output_name], 
+        [output_name],
         inference_inputs
         )
     return outputs[0]
